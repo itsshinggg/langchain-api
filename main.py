@@ -44,8 +44,9 @@ async def test():
 
 llm = ChatOpenAI(api_key=settings.openai_api_key)
 
-@app.get("/loader")
-def main():
+@app.post("/loader")
+def main(user_prompt:Prompt):
+    print(user_prompt)
     loader = TextLoader("./intern.txt")
     docs = loader.load()
 
@@ -68,5 +69,5 @@ def main():
     retriever = vector.as_retriever()
     retrieval_chain = create_retrieval_chain(retriever, document_chain)
 
-    response = retrieval_chain.invoke({"input": "Who is Shingo Kise?"})
+    response = retrieval_chain.invoke({"input": f"{user_prompt}"})
     return {"response": response["answer"]}
