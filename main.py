@@ -44,7 +44,7 @@ text_splitter = RecursiveCharacterTextSplitter()
 documents = text_splitter.split_documents(docs)
 vector = FAISS.from_documents(documents, embeddings)
 
-prompt = ChatPromptTemplate.from_template("""Answer the following question based only on the provided context:
+prompt = ChatPromptTemplate.from_template("""You are a helpful assistant to students who could use internship information from previous students to apply for an internship. Answer the following question based only on the provided context:
 
 <context>
 {context}
@@ -57,7 +57,7 @@ document_chain = create_stuff_documents_chain(llm, prompt)
 retriever = vector.as_retriever()
 retrieval_chain = create_retrieval_chain(retriever, document_chain)
 
-@app.post("/loader")
+@app.post("/intern")
 def main(user_prompt:Prompt):
     response = retrieval_chain.invoke({"input": f"{user_prompt}"})
     return {"response": response["answer"]}
