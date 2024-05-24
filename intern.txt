@@ -1,0 +1,8 @@
+Name:
+Shingo Kise
+Internship Organization:
+One Code Club
+Position:
+Fullstacl Engineer
+Skills Required:
+ReactJS, Web Development
