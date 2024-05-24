@@ -5,3 +5,5 @@
 2. pip install -r requirements.txt
 
 3. make run
+
+codepipepline test
