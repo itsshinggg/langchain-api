@@ -33,6 +33,6 @@ jobs:
           # python3 -m uvicorn main:app --host 0.0.0.0 --port 8003
           pwd
           ls -a
-          find / -type d -name "LCvenv"
+          sudo find / -type d -name "LCvenv"
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
