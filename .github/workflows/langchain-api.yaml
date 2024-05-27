@@ -33,5 +33,6 @@ jobs:
             sudo apt-get update
             sudo apt-get -y update
             source venv/bin/activate
+            echo $OPENAI_API_KEY
             cd langchain-api
             python3 -m uvicorn main:app --host 0.0.0.0 --port 8000
