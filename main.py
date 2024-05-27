@@ -32,7 +32,7 @@ class Prompt(BaseModel):
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Hello World Actions Test!"}
 
 llm = ChatOpenAI(api_key=settings.openai_api_key)
 loader = TextLoader("./intern.txt")
