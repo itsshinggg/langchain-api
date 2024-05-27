@@ -8,14 +8,9 @@ from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import BaseModel
 
-class Settings(BaseSettings):
-    openai_api_key: str
-    model_config = SettingsConfigDict(env_file=".env")
-
-settings = Settings()
+import os
 
 app = FastAPI()
 
@@ -34,11 +29,11 @@ class Prompt(BaseModel):
 async def root():
     return {"message": "Hello World"}
 
-llm = ChatOpenAI(api_key=settings.openai_api_key)
+llm = ChatOpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 loader = TextLoader("./intern.txt")
 docs = loader.load()
 
-embeddings = OpenAIEmbeddings(api_key=settings.openai_api_key)
+embeddings = OpenAIEmbeddings(api_key=os.getenv('OPENAI_API_KEY'))
 
 text_splitter = RecursiveCharacterTextSplitter()
 documents = text_splitter.split_documents(docs)
