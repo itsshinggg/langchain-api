@@ -1,0 +1,19 @@
+name: Test Trigger on Main Branch
+
+# Trigger deployment only on push to main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Test Trigger
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
+      - name: Run a test script
+        run: echo "This workflow was triggered by a push to the main branch!"
