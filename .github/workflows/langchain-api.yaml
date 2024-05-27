@@ -26,6 +26,7 @@ jobs:
         run: |
           pwd
           ls -a
+          ls /LCvenv
           cd ..
           pwd
           ls -a
