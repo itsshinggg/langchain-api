@@ -3,6 +3,7 @@
 1. lauch ubuntu EC2 instance on AWS
 
 set up (these can be included in a EC2's user data)
+
 2. `sudo apt-get update`
 3. `sudo apt install python3-pip`
 4. `sudo apt install python3-venv -y`
