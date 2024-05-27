@@ -7,10 +7,9 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.chains.combine_documents import create_stuff_documents_chain
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from langchain.chains import create_retrieval_chain
 from pydantic import BaseModel
-
-import os
 
 app = FastAPI()
 
@@ -25,16 +24,21 @@ app.add_middleware(
 class Prompt(BaseModel):
     message: str
 
+class Settings(BaseSettings):
+    openai_api_key: str
+    model_config = SettingsConfigDict(env_file=".env")
+
+settings = Settings()
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
-llm = ChatOpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+llm = ChatOpenAI(api_key=settings.openai_api_key)
 loader = TextLoader("./intern.txt")
 docs = loader.load()
 
-embeddings = OpenAIEmbeddings(api_key=os.getenv('OPENAI_API_KEY'))
-print(os.getenv('OPENAI_API_KEY'))
+embeddings = OpenAIEmbeddings(api_key=settings.openai_api_key)
 
 text_splitter = RecursiveCharacterTextSplitter()
 documents = text_splitter.split_documents(docs)
@@ -53,7 +57,7 @@ document_chain = create_stuff_documents_chain(llm, prompt)
 retriever = vector.as_retriever()
 retrieval_chain = create_retrieval_chain(retriever, document_chain)
 
-# @app.post("/intern")
-# def main(user_prompt:Prompt):
-#     response = retrieval_chain.invoke({"input": f"{user_prompt}"})
-#     return {"response": response["answer"]}
+@app.post("/intern")
+def main(user_prompt:Prompt):
+    response = retrieval_chain.invoke({"input": f"{user_prompt}"})
+    return {"response": response["answer"]}
