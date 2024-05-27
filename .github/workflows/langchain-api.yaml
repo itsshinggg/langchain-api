@@ -28,11 +28,12 @@ jobs:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          openai_api_key: ${{ secrets.OPENAI_API_KEY }}
           script: |
             sudo apt-get update
             sudo apt-get -y update
             source venv/bin/activate
+            echo OPENAI_API_KEY=${openai_api_key} > .env
             echo $OPENAI_API_KEY
             cd langchain-api
             python3 -m uvicorn main:app --host 0.0.0.0 --port 8000
