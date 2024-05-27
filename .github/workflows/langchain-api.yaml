@@ -30,7 +30,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        script: |
+        run: |
           cd langchain-api
           source LCvenv/bin/activate # activate Python venv
           sudo bash -c 'echo "OPENAI_API_KEY=${OPENAI_API_KEY}" > .env'
