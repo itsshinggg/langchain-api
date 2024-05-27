@@ -30,7 +30,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
         env:
           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
-        script: |
+        run: |
           # sudo apt-get update
           # sudo apt-get -y update 
           cd langchain-api
