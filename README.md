@@ -1,6 +1,6 @@
 # langchain-api
 
-1. add .env file and put OPENAI_API_KEY=your-api-key
+1. create secret key and add .env file and put OPENAI_API_KEY=your-api-key
 
 2. pip install -r requirements.txt
 
