@@ -1,6 +1,6 @@
 # langchain-api
 
-1. create secret key and add to .env file
+1. create secret key and add to .env file 
 
 2. pip install -r requirements.txt
 
