@@ -14,10 +14,12 @@ set up (these can be included in a EC2's user data)
 7. `cd langchain-api/`
 
 create your python virtual environemnt and activate it
+
 9. `python3 -m venv <your virtual environment name>`
 10. `source <your virtual environment name>/bin/activate`
 
 enable a permission and download required packages
+
 11. `sudo chown -R ubuntu:ubuntu <your virtual environment name>`
 12. `pip install -r requirements.txt`
 13. store openai api key into .env file
