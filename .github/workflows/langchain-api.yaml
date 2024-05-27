@@ -34,5 +34,5 @@ jobs:
             # sudo apt-get -y update 
             cd langchain-api
             source LCvenv/bin/activate # activate puthon venv
-            sudo bash -c 'echo "OPENAI_API_KEY=new_api_key" > .env'
+            sudo bash -c 'echo "OPENAI_API_KEY=${openai_api_key}" > .env'
             python3 -m uvicorn main:app --host 0.0.0.0 --port 8003
