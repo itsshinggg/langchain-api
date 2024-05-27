@@ -26,6 +26,9 @@ jobs:
         run: |
           pwd
           ls -a
+          cd ..
+          pwd
+          ls -a
           # sudo apt install python3-venv -y
           # sudo python3 -m venv LCvenv
           # source LCvenv/bin/activate
