@@ -34,7 +34,7 @@ jobs:
           pwd
           ls -a
           sudo find / -type d -name "LCvenv"
-          find / -name "pyvenv.cfg"
+          sudo find / -name "pyvenv.cfg"
 
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
