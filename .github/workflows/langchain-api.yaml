@@ -29,11 +29,9 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
         env:
-          openai_api_key: ${{ secrets.OPENAI_API_KEY }}
-        run: |
-          # sudo apt-get update
-          # sudo apt-get -y update 
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        script: |
           cd langchain-api
-          source LCvenv/bin/activate # activate puthon venv
-          sudo bash -c 'echo "OPENAI_API_KEY=${openai_api_key}" > .env'
+          source LCvenv/bin/activate # activate Python venv
+          sudo bash -c 'echo "OPENAI_API_KEY=${OPENAI_API_KEY}" > .env'
           python3 -m uvicorn main:app --host 0.0.0.0 --port 8003
