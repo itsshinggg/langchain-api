@@ -27,7 +27,6 @@ jobs:
           sudo apt install python3-venv -y
           sudo python3 -m venv LCvenv
           source LCvenv/bin/activate
-          sudo chown -R ubuntu:ubuntu LCvenv
           pip install -r requirements.txt
           sudo bash -c 'echo "OPENAI_API_KEY=${OPENAI_API_KEY}" > .env'
           python3 -m uvicorn main:app --host 0.0.0.0 --port 8003
