@@ -31,7 +31,7 @@ jobs:
           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
           script: |
             # sudo apt-get update
-            # sudo apt-get -y update
+            # sudo apt-get -y update 
             source LCvenv/bin/activate # activate puthon venv
             sudo bash -c 'echo "OPENAI_API_KEY=new_api_key" > .env'
             cd langchain-api
