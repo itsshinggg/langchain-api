@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, File
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
@@ -33,6 +34,10 @@ settings = Settings()
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
+@app.get("/.well-known/pki-validation/CE2D307485C3534C29B9BBB291CE7B98.txt")
+async def send_req_txt():
+    return FileResponse("/Users/shingokise/Documents/skool/Classes/Spring-24/langchainAPI/CE2D307485C3534C29B9BBB291CE7B98.txt", media_type='text/plain', filename='CE2D307485C3534C29B9BBB291CE7B98.txt')
 
 llm = ChatOpenAI(api_key=settings.openai_api_key)
 loader = TextLoader("./intern.txt")
