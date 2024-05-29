@@ -17,8 +17,8 @@ install nginx and set proxy
 1. `sudo apt install nginx`
 2. `sudo nano /etc/nginx/sites-available/default`
 3. Add the following to the location part of the server block
-   `server_name yourdomain.com;
 
+   ```
    location / {
    proxy_pass http://<ec2-instance elastic IP address>:<port number> #whatever port your app runs on
    proxy_http_version 1.1;
@@ -26,7 +26,8 @@ install nginx and set proxy
    proxy_set_header Connection 'upgrade';
    proxy_set_header Host $host;
    proxy_cache_bypass $http_upgrade;
-   }`
+   }
+   ```
 
 4. `sudo nginx -t`
 5. `sudo service nginx restart`
