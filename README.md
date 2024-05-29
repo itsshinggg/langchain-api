@@ -64,17 +64,11 @@ Confirming Nginx’s Configuration
 
 5. `sudo ln -s /snap/bin/certbot /usr/bin/certbot`
 
-edit the server line
+edit the server line of nginx configuration
 
-6.
-
-```...
-server_name example.com www.example.com;
-...
-
-```
-
-7. `sudo nginx -t` 8. `sudo systemctl reload nginx`
+6. `server_name example.com www.example.com;`
+7. `sudo nginx -t`
+8. `sudo systemctl reload nginx`
 
 Obtaining an FREE SSL Certificate
 
