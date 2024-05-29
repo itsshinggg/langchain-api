@@ -46,6 +46,8 @@ jobs:
             # Configure Nginx
             echo '
             server {
+                listen 80 default_server;
+                listen [::]:80 default_server;
                 server_name ${{ secrets.URL }};
 
                 location / {
