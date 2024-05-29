@@ -66,11 +66,14 @@ Confirming Nginx’s Configuration
 
 edit the server line
 
-6.```...
+6.
+
+```...
 server_name example.com www.example.com;
 ...
 
 ```
+
 7. `sudo nginx -t` 8. `sudo systemctl reload nginx`
 
 Obtaining an FREE SSL Certificate
@@ -80,4 +83,7 @@ Obtaining an FREE SSL Certificate
 Verifying Certbot Auto-Renewal
 
 10. `sudo systemctl status snap.certbot.renew.service`
+
+```
+
 ```
