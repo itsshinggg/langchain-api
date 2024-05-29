@@ -50,7 +50,8 @@ def gpt(user_prompt:Prompt):
 
     chain = gpt_prompt | llm 
     gpt_res = chain.invoke({"input": f"{user_prompt}"})
-    return {"response": gpt_res["answer"]}
+    return gpt_res
+    # return {"response": gpt_res["answer"]}
 
 # Intermship endpoint
 @app.post("/intern")
