@@ -48,7 +48,7 @@ install required packages in the virtual environment
 
 run
 
-7. `python3 -m uvicorn main:app --host 0.0.0.0 --port 8000`
+7. `python3 -m uvicorn main:app --host 0.0.0.0 --port number`
 
 ---
 
