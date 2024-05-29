@@ -68,6 +68,5 @@ jobs:
             sudo certbot --nginx -d ${{secrets.URL}} 
             sudo systemctl status snap.certbot.renew.service 
 
-
             # Start univorn
             python3 -m uvicorn main:app --host 0.0.0.0 --port ${{ secrets.PORT }}
