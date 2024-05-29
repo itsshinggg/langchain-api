@@ -1,27 +1,61 @@
 # langchain-api
 
-1. lauch ubuntu EC2 instance on AWS
+lauch ubuntu EC2 instance on AWS
 
 set up (these can be included in a EC2's user data)
 
-2. `sudo apt-get update`
-3. `sudo apt install python3-pip`
-4. `sudo apt install python3-venv -y`
-5. `sudo apt install git`
-6. `sudo git clone https://github.com/itsshinggg/langchain-api.git`
------
+install packages and clone the github repository
 
-7. `cd langchain-api/`
+1. `sudo apt-get update`
+2. `sudo apt install python3-pip`
+3. `sudo apt install python3-venv -y`
+4. `sudo apt install git`
+5. `sudo git clone https://github.com/itsshinggg/langchain-api.git`
+
+install nginx and set proxy
+
+1. `sudo apt install nginx`
+2. `sudo nano /etc/nginx/sites-available/default`
+3. Add the following to the location part of the server block
+   `server_name yourdomain.com;
+
+   location / {
+   proxy_pass http://<ec2-instance elastic IP address>:<port number> #whatever port your app runs on
+   proxy_http_version 1.1;
+   proxy_set_header Upgrade $http_upgrade;
+   proxy_set_header Connection 'upgrade';
+   proxy_set_header Host $host;
+   proxy_cache_bypass $http_upgrade;
+   }`
+
+4. `sudo nginx -t`
+5. `sudo service nginx restart`
+
+--
 
 create your python virtual environemnt and activate it
 
-9. `python3 -m venv <your virtual environment name>`
-10. `source <your virtual environment name>/bin/activate`
+1. `cd langchain-api/`
+2. `python3 -m venv <your virtual environment name>`
+3. `source <your virtual environment name>/bin/activate`
+4. `sudo chown -R ubuntu:ubuntu <your virtual environment name>`
+5. `pip install -r requirements.txt`
+6. store openai api key into .env file
+7. `python3 -m uvicorn main:app --host 0.0.0.0 --port 8000`
 
-enable a permission and download required packages
+---
 
-11. `sudo chown -R ubuntu:ubuntu <your virtual environment name>`
-12. `pip install -r requirements.txt`
-13. store openai api key into .env file
+Installing Free SSL using Certbot
 
-run  `python3 -m uvicorn main:app --host 0.0.0.0 --port 8000`
+1. create a domain
+2. `sudo snap install core; sudo snap refresh core`
+3. `sudo apt remove certbot`
+4. `sudo snap install --classic certbot`
+5. `sudo ln -s /snap/bin/certbot /usr/bin/certbot`
+6. `...
+server_name example.com www.example.com;
+...`
+7. `sudo nginx -t`
+8. `sudo systemctl reload nginx`
+9. `sudo certbot --nginx -d app.example.com `
+10. `sudo systemctl status snap.certbot.renew.service`
