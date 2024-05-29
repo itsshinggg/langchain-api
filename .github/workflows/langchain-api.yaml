@@ -49,7 +49,7 @@ jobs:
                 server_name ${{ secrets.URL }};
 
                 location /gpt {
-                    proxy_pass http://localhost:${{ secrets.PORT }};
+                    proxy_pass http://${{ secrets.URL }}:${{ secrets.PORT }};
                     proxy_set_header Host $host;
                     proxy_set_header X-Real-IP $remote_addr;
                     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
