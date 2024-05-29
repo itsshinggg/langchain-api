@@ -1,18 +1,17 @@
-name: Push-Changes-to-EC2
+name: Deploy and Configure Nginx on EC2
 
-# Trigger deployment only on push to main branch
 on:
   push:
     branches:
       - main
 
 jobs:
-  deploy:
-    name: Deploy to EC2 on main branch push
+  deploy-and-configure-nginx:
+    name: Deploy and Configure Nginx
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout the files
+      - name: Checkout the repository
         uses: actions/checkout@v2
 
       - name: Deploy to Server 1
@@ -22,19 +21,46 @@ jobs:
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
           REMOTE_USER: ${{ secrets.USERNAME }}
 
-      - name: Executing remote ssh commands using ssh key
-        run: |
-          # sudo apt install python3-venv -y
-          # sudo python3 -m venv venvtest
-          # source venvtest/bin/activate
-          # sudo pip install -r requirements.txt
-          # sudo bash -c 'echo "OPENAI_API_KEY=${OPENAI_API_KEY}" > .env'
-          # pip list
-          # python3 -m uvicorn main:app --host 0.0.0.0 --port 8003
-          pwd
-          ls -a
-          sudo find / -type d -name "LCvenv"
-          sudo find / -name "pyvenv.cfg"
+      - name: Execute remote SSH commands using SSH key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_DNS }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Install Python, venv, git, and other dependencies
+            sudo apt update 
+            sudo apt install -y python3 python3-venv git
+            sudo git clone https://github.com/itsshinggg/langchain-api.git
+            cd langchain-api
+            sudo python -m venv rag-venv
+            source rag-venv/bin/activate
+            sudo chown -R ubuntu:ubuntu /home/ubuntu/langchain-api
+            pip install -r requirements.txt
+            sudo bash -c 'echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env'
 
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+            # Install Nginx if not already installed
+            sudo apt-get update
+            sudo apt-get install -y nginx
+
+            # Configure Nginx
+            echo '
+            server {
+                server_name ${{ secrets.URL }};
+
+                location /gpt {
+                    proxy_pass http://localhost:${{ secrets.PORT }};
+                    proxy_set_header Host $host;
+                    proxy_set_header X-Real-IP $remote_addr;
+                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                    proxy_set_header X-Forwarded-Proto $scheme;
+                }
+            }
+            ' | sudo tee /etc/nginx/sites-available/default
+
+            # Verify Nginx configuration and reload
+            sudo nginx -t
+            sudo systemctl reload nginx
+
+            # Start uvicorn
+            python3 -m uvicorn main:app --host 0.0.0.0 --port ${{ secrets.PORT }}
