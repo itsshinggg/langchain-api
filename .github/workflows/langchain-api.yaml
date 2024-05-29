@@ -48,7 +48,7 @@ jobs:
             server {
                 server_name ${{ secrets.URL }};
 
-                location /gpt {
+                location / {
                     proxy_pass http://${{ secrets.ELASTIC_IP }}:${{ secrets.PORT }};
                     proxy_set_header Host $host;
                     proxy_set_header X-Real-IP $remote_addr;
