@@ -58,7 +58,9 @@ Installing Free SSL using Certbot
 
 Installing Certbot
 
-2. `sudo snap install core; sudo snap refresh core` 3. `sudo apt remove certbot` 4. `sudo snap install --classic certbot`
+2. `sudo snap install core; sudo snap refresh core`
+3. `sudo apt remove certbot`
+4. `sudo snap install --classic certbot`
 
 Confirming Nginx’s Configuration
 
