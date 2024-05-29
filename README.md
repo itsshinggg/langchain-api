@@ -40,9 +40,15 @@ create your python virtual environemnt and activate it
 2. `python3 -m venv <your virtual environment name>`
 3. `source <your virtual environment name>/bin/activate`
 
-install required packages in the virtual environment 4. `sudo chown -R ubuntu:ubuntu <your virtual environment name>` 5. `pip install -r requirements.txt` 6. store openai api key into .env file
+install required packages in the virtual environment
 
-run 7. `python3 -m uvicorn main:app --host 0.0.0.0 --port 8000`
+4. `sudo chown -R ubuntu:ubuntu <your virtual environment name>`
+5. `pip install -r requirements.txt`
+6. store openai api key into .env file
+
+run
+
+7. `python3 -m uvicorn main:app --host 0.0.0.0 --port 8000`
 
 ---
 
@@ -50,15 +56,28 @@ Installing Free SSL using Certbot
 
 1. create a domain
 
-Installing Certbot 2. `sudo snap install core; sudo snap refresh core` 3. `sudo apt remove certbot` 4. `sudo snap install --classic certbot`
+Installing Certbot
 
-Confirming Nginx’s Configuration 5. `sudo ln -s /snap/bin/certbot /usr/bin/certbot`
+2. `sudo snap install core; sudo snap refresh core` 3. `sudo apt remove certbot` 4. `sudo snap install --classic certbot`
 
-edit the server line 6. `...
+Confirming Nginx’s Configuration
+
+5. `sudo ln -s /snap/bin/certbot /usr/bin/certbot`
+
+edit the server line
+
+6.```...
 server_name example.com www.example.com;
 ...
-` 7. `sudo nginx -t` 8. `sudo systemctl reload nginx`
 
-Obtaining an FREE SSL Certificate 9. `sudo certbot --nginx -d app.example.com `
+```
+7. `sudo nginx -t` 8. `sudo systemctl reload nginx`
 
-Verifying Certbot Auto-Renewal 10. `sudo systemctl status snap.certbot.renew.service`
+Obtaining an FREE SSL Certificate
+
+9. `sudo certbot --nginx -d app.example.com `
+
+Verifying Certbot Auto-Renewal
+
+10. `sudo systemctl status snap.certbot.renew.service`
+```
