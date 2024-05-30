@@ -37,6 +37,13 @@ install nginx, set reverse proxy, and obtain SSL
       include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
       ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
    }
+
+   server {
+         if ($host = <domainname.com>) {
+            return 301 https://$host$request_uri;
+         } # managed by Certbot
+      }
+
    ```
 
 5. `sudo nginx -t`
