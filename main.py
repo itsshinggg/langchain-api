@@ -43,7 +43,7 @@ async def root():
 
 # GPT endpoint
 @app.post("/gpt")
-def gpt(msg):
+def gpt(user_prompt:Prompt):
     gpt_prompt = ChatPromptTemplate.from_messages([
         ("system", "You are a world class chatbot."),
         ("user", "{input}")
@@ -51,10 +51,7 @@ def gpt(msg):
 
     output_parser = StrOutputParser()
     chain = gpt_prompt | llm | output_parser
-    return {chain.invoke({"input": f"{msg}"})}
-    # gpt_res = chain.invoke({"input": f"{user_prompt}"})
-    return gpt_res
-    return {"response": gpt_res["content"]}
+    return {chain.invoke({"input": f"{user_prompt}"})}
 
 # Intermship endpoint
 @app.post("/intern")
