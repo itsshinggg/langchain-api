@@ -51,8 +51,10 @@ def gpt(msg):
 
     output_parser = StrOutputParser()
     chain = gpt_prompt | llm | output_parser
-    gpt_res = chain.invoke({"input": f"{msg}"})
-    return {"response": gpt_res.content}
+    return {chain.invoke({"input": f"{msg}"})}
+    # gpt_res = chain.invoke({"input": f"{user_prompt}"})
+    return gpt_res
+    return {"response": gpt_res["content"]}
 
 # Intermship endpoint
 @app.post("/intern")
