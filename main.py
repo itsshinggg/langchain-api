@@ -51,7 +51,8 @@ def gpt(user_prompt:Prompt):
 
     output_parser = StrOutputParser()
     chain = gpt_prompt | llm | output_parser
-    return(chain.invoke({"input": f"{user_prompt}"}))
+    return {{message: 'test!'}}
+    # return(chain.invoke({"input": f"{user_prompt}"}))
     
     # gpt_res = chain.invoke({"input": f"{user_prompt}"})
     return gpt_res
