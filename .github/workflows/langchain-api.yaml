@@ -70,6 +70,7 @@ jobs:
                 if ($host = ${{ secrets.URL }}) {
                     return 301 https://$host$request_uri;
                 } # managed by Certbot
+              }
 
             ' | sudo tee /etc/nginx/sites-available/default
             sudo systemctl reload nginx
