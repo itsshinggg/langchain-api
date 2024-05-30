@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
 from langchain_community.document_loaders import TextLoader
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -48,8 +49,11 @@ def gpt(user_prompt:Prompt):
         ("user", "{input}")
     ])
 
-    chain = gpt_prompt | llm 
-    gpt_res = chain.invoke({"input": f"{user_prompt}"})
+    output_parser = StrOutputParser()
+    chain = gpt_prompt | llm | output_parser
+    return(chain.invoke({"input": f"{user_prompt}"}))
+    
+    # gpt_res = chain.invoke({"input": f"{user_prompt}"})
     return gpt_res
     # return {"response": gpt_res["answer"]}
 
