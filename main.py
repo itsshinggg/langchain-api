@@ -34,7 +34,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env")
 
 settings = Settings()
-llm = ChatOpenAI(api_key=settings.openai_api_key)
+llm = ChatOpenAI(api_key='settings.openai_api_key')
 
 # Root endpoint
 @app.get("/")
@@ -43,7 +43,7 @@ async def root():
 
 # GPT endpoint
 @app.post("/gpt")
-def gpt(user_prompt:Prompt):
+def gpt(msg):
     gpt_prompt = ChatPromptTemplate.from_messages([
         ("system", "You are a world class chatbot."),
         ("user", "{input}")
@@ -51,9 +51,8 @@ def gpt(user_prompt:Prompt):
 
     output_parser = StrOutputParser()
     chain = gpt_prompt | llm | output_parser
-    return {{'message': 'test!'}}
+    return {chain.invoke({"input": f"{msg}"})}
     # return(chain.invoke({"input": f"{user_prompt}"}))
-    
     # gpt_res = chain.invoke({"input": f"{user_prompt}"})
     return gpt_res
     # return {"response": gpt_res["answer"]}
