@@ -8,3 +8,14 @@ Skills Required:
 ReactJS, Web Development
 Date:
 2023 Spring Quarter 
+
+Name:
+Kim Nguyen
+Internship Organization:
+Adobe
+Position:
+Fullstacl Engineer
+Skills Required:
+ReactJS, Web Development
+Date:
+2022 Spring Quarter 
