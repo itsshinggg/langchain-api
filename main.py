@@ -34,7 +34,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env")
 
 settings = Settings()
-llm = ChatOpenAI(api_key='settings.openai_api_key')
+llm = ChatOpenAI(api_key=settings.openai_api_key)
 
 # Root endpoint
 @app.get("/")
