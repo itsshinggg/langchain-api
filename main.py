@@ -39,7 +39,7 @@ llm = ChatOpenAI(api_key=settings.openai_api_key)
 # Root endpoint
 @app.get("/")
 async def root():
-    return {"message": "Hello Test2!"}
+    return {"message": "Hello World!"}
 
 # GPT endpoint
 @app.post("/gpt")
@@ -54,7 +54,6 @@ def gpt(user_prompt:Prompt):
     llm_response = chain.invoke({"input": f"{user_prompt}"})
     print(llm_response)
     return {"response": llm_response}
-    # return {chain.invoke({"input": f"{user_prompt}"})}
 
 # Intermship endpoint
 @app.post("/intern")
@@ -68,7 +67,7 @@ def rag(user_prompt:Prompt):
     documents = text_splitter.split_documents(docs)
     vector = FAISS.from_documents(documents, embeddings)
 
-    prompt = ChatPromptTemplate.from_template("""You are a helpful assistant to students who could use internship information from previous students to apply for an internship. Answer the following question based only on the provided context:
+    prompt = ChatPromptTemplate.from_template("""You are a helpful assistant to students who could use internship information from previous students to apply for an internship. Based only on the provided context,answer the following question by providing useful information for their internship application process:
 
     <context>
     {context}
