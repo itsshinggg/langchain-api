@@ -67,7 +67,7 @@ def rag(user_prompt:Prompt):
     documents = text_splitter.split_documents(docs)
     vector = FAISS.from_documents(documents, embeddings)
 
-    prompt = ChatPromptTemplate.from_template("""You are a helpful assistant to students who could use internship information from previous students to apply for an internship. Please provide a few names of organizations, positions, and required skillsets, ordered from the most relevant to the least, based on our students' history. Please include "based on our students' history" in your response. :
+    prompt = ChatPromptTemplate.from_template("""You are a helpful assistant to students seeking internship opportunities, utilizing information from previous students to guide their applications. Please provide several descriptions of organizations, positions, and required skill sets, ordered from the most relevant to the least, based solely on the provided context. Remember to incorporate "based on our students' history" in your recommendations to encourage students to consider applying there :
 
     <context>
     {context}
