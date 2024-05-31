@@ -39,7 +39,7 @@ llm = ChatOpenAI(api_key=settings.openai_api_key)
 # Root endpoint
 @app.get("/")
 async def root():
-    return {"message": "Hello Test!"}
+    return {"message": "Hello Hello!"}
 
 # GPT endpoint
 @app.post("/gpt")
