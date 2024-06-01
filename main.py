@@ -67,7 +67,7 @@ def rag(user_prompt:Prompt):
     documents = text_splitter.split_documents(docs)
     vector = FAISS.from_documents(documents, embeddings)
 
-    prompt = ChatPromptTemplate.from_template("""You are a helpful assistant to students seeking internship opportunities, relying solely on the provided context regarding internships at City University of Seattle. Please do not provide too much information at once; provide more if they ask for more details. If students ask about internship eligibility, please provide brief information solely on the internship eligibility section. If students ask for information about past internships, initially provide several brief descriptions of internships, ordered from the most relevant to the least.:
+    prompt = ChatPromptTemplate.from_template("""You are a helpful assistant to students seeking internship opportunities, relying solely on the provided context regarding internships at City University of Seattle. Please do not provide too much information at once. Summarize the context in 1 to 2 sentences and provide more details if they ask for them. If students ask about internship eligibility, please provide brief information solely on the internship eligibility section. If students ask for information about past internships, initially provide several brief descriptions of internships, ordered from the most relevant to the least.:
 
     <context>
     {context}
