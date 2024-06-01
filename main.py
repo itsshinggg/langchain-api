@@ -63,21 +63,21 @@ def rag(user_prompt:Prompt):
 
     embeddings = OpenAIEmbeddings(api_key=settings.openai_api_key)
 
-    # text_splitter = RecursiveCharacterTextSplitter(
-    #     separator='\n',
-    #     chunk_size=1000,
-    #     chunk_overlap=200,
-    #     length_function=len
-    # )
-    # documents = text_splitter.split_documents(docs)
-
-    text_splitter = CharacterTextSplitter(
+    text_splitter = RecursiveCharacterTextSplitter(
         separator='\n',
         chunk_size=1000,
         chunk_overlap=200,
         length_function=len
     )
-    documents = text_splitter.split_text(docs)
+    documents = text_splitter.split_documents(docs)
+
+    # text_splitter = CharacterTextSplitter(
+    #     separator='\n',
+    #     chunk_size=1000,
+    #     chunk_overlap=200,
+    #     length_function=len
+    # )
+    # documents = text_splitter.split_text(docs)
 
     vector = FAISS.from_documents(documents, embeddings)
 
