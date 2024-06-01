@@ -10,6 +10,7 @@ from langchain_community.document_loaders import TextLoader
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_text_splitters import CharacterTextSplitter
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
 
@@ -52,7 +53,6 @@ def gpt(user_prompt:Prompt):
     output_parser = StrOutputParser()
     chain = gpt_prompt | llm | output_parser
     llm_response = chain.invoke({"input": f"{user_prompt}"})
-    print(llm_response)
     return {"response": llm_response}
 
 # Intermship endpoint
@@ -63,8 +63,22 @@ def rag(user_prompt:Prompt):
 
     embeddings = OpenAIEmbeddings(api_key=settings.openai_api_key)
 
-    text_splitter = RecursiveCharacterTextSplitter()
-    documents = text_splitter.split_documents(docs)
+    # text_splitter = RecursiveCharacterTextSplitter(
+    #     separator='\n',
+    #     chunk_size=1000,
+    #     chunk_overlap=200,
+    #     length_function=len
+    # )
+    # documents = text_splitter.split_documents(docs)
+
+    text_splitter = CharacterTextSplitter(
+        separator='\n',
+        chunk_size=1000,
+        chunk_overlap=200,
+        length_function=len
+    )
+    documents = text_splitter.split_text(docs)
+
     vector = FAISS.from_documents(documents, embeddings)
 
     prompt = ChatPromptTemplate.from_template("""You are a helpful assistant to students seeking internship opportunities, relying solely on the provided context regarding internships at City University of Seattle. Please do not provide too much information at once. Summarize the context in 1 to 2 sentences and provide more details if they ask for them. If students ask about internship eligibility, please provide brief information solely on the internship eligibility section. If students ask for information about past internships, initially provide several brief descriptions of internships, ordered from the most relevant to the least.:
