@@ -1,4 +1,4 @@
-General Internship Eligibility:
+Internship Eligibility:
 For international students, after completing the first three quarters, you can apply for the internship course with CPT as an elective course.
 Students can take the internship course only if the school does not offer two core courses, and if they have not already taken two elective courses.
 You need to obtain an offer letter and a program director’s approval letter by week 5 of the previous quarter.
@@ -11,34 +11,24 @@ Past Students' Internship Record:
 Student1:
 Organization Name:
 One Code Club
-
 Industry:
 Non-Profit Organization in Youth Education 
-
 Location:
 Remote
-
 Internship Title:
 Fullstack Engineer
-
 Internship Description:
 Worked on frontend developmet of a website using Next.js.
-
 Duration:
 2023 Spring Quarter 
-
 Application Process:
 Through connections.
-
 Website Information:
 https://onecodeclub.io/
-
 Requirements:
 Knowledge in React JS and general knowledge in overall sotware engineering 
-
 Compensation:
 Non-paid
-
 Former Intern Insights:
 The supervisor is flexible, helpful, and willing to work with City University's course schedule.
 Really good opportunities to learn web development with modern technologies while giving back to the IT community. 
