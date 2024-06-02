@@ -111,6 +111,9 @@ def raga():
     )
     chunks = text_splitter.split_text(text)
     documents = [Document(page_content=chunk) for chunk in chunks]
+
+    print(f"API Key in raga function: {settings.openai_api_key}")
+
     llm = ChatOpenAI(api_key=settings.openai_api_key)
     embeddings = OpenAIEmbeddings(api_key=settings.openai_api_key)
     vectorstore = FAISS.from_documents(documents, embeddings)
