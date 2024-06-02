@@ -98,12 +98,13 @@ def rag(user_prompt:Prompt):
     return {"response": response["answer"]}
 
 # RAGAs Evaluation Endpoint
-@app.get("/raga")
-def raga():
+@app.get("/ragas")
+def ragas():
     loader = TextLoader("./intern.txt")
     docs = loader.load()
     text = "\n".join(doc.page_content for doc in docs)
 
+    # split into chunks
     text_splitter = CharacterTextSplitter(
         separator="\n",
         chunk_size=1000,
@@ -113,8 +114,10 @@ def raga():
     chunks = text_splitter.split_text(text)
     documents = [Document(page_content=chunk) for chunk in chunks]
 
+    # the evaluate() somehow reaches os.environ["OPENAI_API_KEY"]
     os.environ["OPENAI_API_KEY"] = settings.openai_api_key
-    llm = ChatOpenAI(api_key=settings.openai_api_key)
+
+    # create embeddings
     embeddings = OpenAIEmbeddings(api_key=settings.openai_api_key)
     vectorstore = FAISS.from_documents(documents, embeddings)
       
@@ -128,6 +131,7 @@ def raga():
 
     Question: {question}""")
 
+    # rag chain
     rag_chain = (
         {"context": retriever,  "question": RunnablePassthrough()} 
         | prompt 
@@ -145,7 +149,7 @@ def raga():
         answers.append(rag_chain.invoke(query))
         contexts.append([docs.page_content for docs in retriever.get_relevant_documents(query)])
 
-    # To dict
+    # To dictionary
     data = {
         "question": questions,
         "answer": answers,
@@ -167,4 +171,3 @@ def raga():
     
     df = result.to_pandas()
     print(df)
-    return {"df": df}
