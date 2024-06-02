@@ -108,13 +108,13 @@ def raga():
         chunk_overlap=200,
         length_function=len
     )
-    documents = text_splitter.split_documents(docs)
+    documents = text_splitter.split_documents(text)
+    llm = ChatOpenAI(api_key=settings.openai_api_key)
     embeddings = OpenAIEmbeddings(api_key=settings.openai_api_key)
     vectorstore = FAISS.from_documents(documents, embeddings)
       
     retriever = vectorstore.as_retriever()
 
-        # Define prompt template
     prompt = ChatPromptTemplate.from_template("""You are a helpful assistant to students seeking internship opportunities, relying solely on the provided context regarding internships at City University of Seattle. Please do not provide too much information at once. Summarize the context in 1 to 2 sentences and provide more details if they ask for them. If students ask about internship eligibility, please provide brief information solely on the internship eligibility section. If students ask for information about past internships, initially provide several brief descriptions of internships, ordered from the most relevant to the least. If a question does not make any sense, or is not factually coherent, or need more information, please kindly explain why instead of answering something not correct. If you do not know the answer to a question, please do not share false information.:
 
     <context>
