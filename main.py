@@ -145,7 +145,7 @@ def raga():
         "question": questions,
         "answer": answers,
         "contexts": contexts,
-        "ground_truths": ground_truths
+        "ground_truth": ground_truths
     }
 
     # Convert dict to dataset
