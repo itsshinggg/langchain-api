@@ -110,7 +110,7 @@ def raga():
     )
     chunks = text_splitter.split_text(text)
 
-    embeddings = OpenAIEmbeddings()
+    embeddings = OpenAIEmbeddings(api_key=settings.openai_api_key)
     vectorstore = FAISS.from_texts(chunks, embeddings)
       
     retriever = vectorstore.as_retriever()
