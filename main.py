@@ -130,7 +130,7 @@ def raga():
         | StrOutputParser() 
     )
 
-    questions = ["I have completed 1 term at City University of Seattle. Am I eligible to apply for the internship course?","How do I apply for the internship course?" "What is the name of the most recently completed internship by a student?"]
+    questions = ["I have completed 1 term at City University of Seattle. Am I eligible to apply for the internship course?","How do I apply for the internship course?", "What is the name of the most recently completed internship by a student?"]
     ground_truths = ["You are eligible to apply for the internship course after completing 3 quarters at City University of Seattle", "You need to obtain an offer letter and a program director’s approval letter by week 5 of the previous quarter.", "One Code Club"]
     answers = []
     contexts = []
