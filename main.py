@@ -16,6 +16,7 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
 
 # RAGAs
+import os
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.schema import Document
@@ -112,8 +113,7 @@ def raga():
     chunks = text_splitter.split_text(text)
     documents = [Document(page_content=chunk) for chunk in chunks]
 
-    print(f"API Key in raga function: {settings.openai_api_key}")
-
+    os.environ["OPENAI_API_KEY"] = settings.openai_api_key
     llm = ChatOpenAI(api_key=settings.openai_api_key)
     embeddings = OpenAIEmbeddings(api_key=settings.openai_api_key)
     vectorstore = FAISS.from_documents(documents, embeddings)
