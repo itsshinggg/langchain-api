@@ -74,11 +74,9 @@ def rag(user_prompt:Prompt):
     loader = TextLoader("./intern.txt")
     docs = loader.load()
 
-    embeddings = OpenAIEmbeddings(api_key=settings.openai_api_key)
-
     text_splitter = RecursiveCharacterTextSplitter()
     documents = text_splitter.split_documents(docs)
-    vector = FAISS.from_documents(documents, embeddings)
+    vector = FAISS.from_documents(documents, llm)
 
     prompt = ChatPromptTemplate.from_template("""You are a helpful assistant to students seeking internship opportunities, relying solely on the provided context regarding internships at City University of Seattle. Please do not provide too much information at once. Summarize the context in 1 to 2 sentences and provide more details if they ask for them. If students ask about internship eligibility, please provide brief information solely on the internship eligibility section. If students ask for information about past internships, initially provide several brief descriptions of internships, ordered from the most relevant to the least. If a question does not make any sense, or is not factually coherent, or need more information, please kindly explain why instead of answering something not correct. If you do not know the answer to a question, please do not share false information.:
 
@@ -95,73 +93,71 @@ def rag(user_prompt:Prompt):
     response = retrieval_chain.invoke({"input": f"{user_prompt}"})
     return {"response": response["answer"]}
 
-# RAGAs Evaluation Endpoint
-@app.get("/raga")
-def raga():
-    loader = TextLoader("./intern.txt")
-    docs = loader.load()
-    text = "\n".join(doc.page_content for doc in docs)
+# # RAGAs Evaluation Endpoint
+# @app.get("/raga")
+# def raga():
+#     loader = TextLoader("./intern.txt")
+#     docs = loader.load()
+#     text = "\n".join(doc.page_content for doc in docs)
 
-    text_splitter = CharacterTextSplitter(
-        separator="\n",
-        chunk_size=1000,
-        chunk_overlap=200,
-        length_function=len
-    )
-    chunks = text_splitter.split_text(text)
-
-    embeddings = OpenAIEmbeddings(api_key=settings.openai_api_key)
-    vectorstore = FAISS.from_texts(chunks, embeddings)
+#     text_splitter = CharacterTextSplitter(
+#         separator="\n",
+#         chunk_size=1000,
+#         chunk_overlap=200,
+#         length_function=len
+#     )
+#     chunks = text_splitter.split_text(text)
+#     vectorstore = FAISS.from_texts(chunks, llm)
       
-    retriever = vectorstore.as_retriever()
-    llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+#     retriever = vectorstore.as_retriever()
+#     llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 
-        # Define prompt template
-    template = """You are a helpful assistant to students seeking internship opportunities, relying solely on the provided context regarding internships at City University of Seattle. Please do not provide too much information at once. Summarize the context in 1 to 2 sentences and provide more details if they ask for them. If students ask about internship eligibility, please provide brief information solely on the internship eligibility section. If students ask for information about past internships, initially provide several brief descriptions of internships, ordered from the most relevant to the least. If a question does not make any sense, or is not factually coherent, or need more information, please kindly explain why instead of answering something not correct. If you do not know the answer to a question, please do not share false information.
-    Question: {question} 
-    Context: {context} 
-    Answer:
-    """
+#         # Define prompt template
+#     template = """You are a helpful assistant to students seeking internship opportunities, relying solely on the provided context regarding internships at City University of Seattle. Please do not provide too much information at once. Summarize the context in 1 to 2 sentences and provide more details if they ask for them. If students ask about internship eligibility, please provide brief information solely on the internship eligibility section. If students ask for information about past internships, initially provide several brief descriptions of internships, ordered from the most relevant to the least. If a question does not make any sense, or is not factually coherent, or need more information, please kindly explain why instead of answering something not correct. If you do not know the answer to a question, please do not share false information.
+#     Question: {question} 
+#     Context: {context} 
+#     Answer:
+#     """
 
-    prompt = ChatPromptTemplate.from_template(template)
+#     prompt = ChatPromptTemplate.from_template(template)
 
-    rag_chain = (
-        {"context": retriever,  "question": RunnablePassthrough()} 
-        | prompt 
-        | llm
-        | StrOutputParser() 
-    )
+#     rag_chain = (
+#         {"context": retriever,  "question": RunnablePassthrough()} 
+#         | prompt 
+#         | llm
+#         | StrOutputParser() 
+#     )
 
-    questions = ["I have completed 1 term at City University of Seattle. Am I eligible to apply for the internship course?","How do I apply for the internship course?" "What is the name of the most recently completed internship by a student?"]
-    ground_truths = ["You are eligible to apply for the internship course after completing 3 quarters at City University of Seattle", "You need to obtain an offer letter and a program director’s approval letter by week 5 of the previous quarter.", "One Code Club"]
-    answers = []
-    contexts = []
+#     questions = ["I have completed 1 term at City University of Seattle. Am I eligible to apply for the internship course?","How do I apply for the internship course?" "What is the name of the most recently completed internship by a student?"]
+#     ground_truths = ["You are eligible to apply for the internship course after completing 3 quarters at City University of Seattle", "You need to obtain an offer letter and a program director’s approval letter by week 5 of the previous quarter.", "One Code Club"]
+#     answers = []
+#     contexts = []
 
-    # Inference
-    for query in questions:
-        answers.append(rag_chain.invoke(query))
-        contexts.append([docs.page_content for docs in retriever.get_relevant_documents(query)])
+#     # Inference
+#     for query in questions:
+#         answers.append(rag_chain.invoke(query))
+#         contexts.append([docs.page_content for docs in retriever.get_relevant_documents(query)])
 
-    # To dict
-    data = {
-        "question": questions,
-        "answer": answers,
-        "contexts": contexts,
-        "ground_truths": ground_truths
-    }
+#     # To dict
+#     data = {
+#         "question": questions,
+#         "answer": answers,
+#         "contexts": contexts,
+#         "ground_truths": ground_truths
+#     }
 
-    # Convert dict to dataset
-    dataset = Dataset.from_dict(data)
-    result = evaluate(
-    dataset = dataset, 
-    metrics=[
-        context_precision,
-        context_recall,
-        faithfulness,
-        answer_relevancy,
-    ],
-    )
+#     # Convert dict to dataset
+#     dataset = Dataset.from_dict(data)
+#     result = evaluate(
+#     dataset = dataset, 
+#     metrics=[
+#         context_precision,
+#         context_recall,
+#         faithfulness,
+#         answer_relevancy,
+#     ],
+#     )
     
-    df = result.to_pandas()
-    print(df)
-    return {"df": df}
+#     df = result.to_pandas()
+#     print(df)
+#     return {"df": df}
