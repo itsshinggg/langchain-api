@@ -108,7 +108,7 @@ def raga():
         chunk_overlap=200,
         length_function=len
     )
-    documents = text_splitter.split_documents(text)
+    documents = text_splitter.split_text(text)
     llm = ChatOpenAI(api_key=settings.openai_api_key)
     embeddings = OpenAIEmbeddings(api_key=settings.openai_api_key)
     vectorstore = FAISS.from_documents(documents, embeddings)
