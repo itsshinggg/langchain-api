@@ -171,3 +171,4 @@ def ragas():
     
     df = result.to_pandas()
     print(df)
+    df.to_csv('output.csv', index=False)      # Export to CSV
