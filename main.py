@@ -18,6 +18,7 @@ from langchain.chains import create_retrieval_chain
 # RAGAs
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.schema.runnable import RunnablePassthrough
+from langchain.schema import Document
 from datasets import Dataset
 from ragas import evaluate
 from ragas.metrics import(
